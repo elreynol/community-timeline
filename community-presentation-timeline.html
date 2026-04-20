@@ -270,6 +270,23 @@
       vertical-align: middle;
     }
 
+    .photo-grid figure.photo-fill-card {
+      display: grid;
+      grid-template: 1fr / 1fr;
+      min-height: 18rem;
+      height: 100%;
+      overflow: hidden;
+      align-self: stretch;
+    }
+
+    .photo-grid figure.photo-fill-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
     @media (max-width: 800px) {
       .timeline-track {
         min-width: 860px;
@@ -309,7 +326,7 @@
             <figure>
               <img src="./assets/property-photo.png" alt="Aerial view of the property, parking, and surrounding area." />
             </figure>
-            <figure>
+            <figure class="photo-fill-card">
               <img src="./assets/photos/aerial-wide-context.png" alt="Wide aerial view of the building, parking, nearby homes, and distant hills." />
             </figure>
           </div>
