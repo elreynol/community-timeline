@@ -182,6 +182,10 @@
       line-height: 1.45;
     }
 
+    .details p + p {
+      margin-top: 0.45rem;
+    }
+
     .foot {
       margin-top: 0.8rem;
       color: var(--muted);
@@ -244,13 +248,41 @@
   <script>
     // We keep the raw event data in one array so updates are easy later.
     const events = [
-      { rawDate: "3/24", label: "Property posted for sale" },
-      { rawDate: "4/16", label: "Community open house" },
-      { rawDate: "4/24", label: "Submit LOI" },
-      { rawDate: "5/1", label: "Best & Final offer" },
-      { rawDate: "5/3", label: "Offer acceptance" },
-      { rawDate: "5/15", label: "Due diligence ends" },
-      { rawDate: "7/3", label: "Close" }
+      {
+        rawDate: "3/24",
+        label: "Property posted for sale",
+        description: "The property was listed publicly, which started the timeline and opened the opportunity for review."
+      },
+      {
+        rawDate: "4/16",
+        label: "Community open house",
+        description: "Community members were invited to tour the site, ask questions, and share early feedback."
+      },
+      {
+        rawDate: "4/24",
+        label: "Submit LOI",
+        description: "A letter of intent was prepared and submitted to show serious interest and outline high-level terms."
+      },
+      {
+        rawDate: "5/1",
+        label: "Best & Final offer",
+        description: "The final proposed purchase terms were delivered, including pricing and key transaction conditions."
+      },
+      {
+        rawDate: "5/3",
+        label: "Offer acceptance",
+        description: "The seller accepted the offer, moving the process from bidding into formal transaction steps."
+      },
+      {
+        rawDate: "5/15",
+        label: "Due diligence ends",
+        description: "Final evaluations, document reviews, and risk checks were completed before closing preparations."
+      },
+      {
+        rawDate: "7/3",
+        label: "Close",
+        description: "Closing is the final transfer point when documents are completed and ownership is officially recorded."
+      }
     ];
 
     // Using the current year lets us avoid hard-coding a year.
@@ -297,6 +329,7 @@
       detailsPanel.innerHTML = `
         <h2>${eventItem.label}</h2>
         <p><strong>Date:</strong> ${eventItem.rawDate}</p>
+        <p>${eventItem.description}</p>
       `;
     }
 
