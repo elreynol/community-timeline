@@ -220,6 +220,56 @@
       border-radius: 8px;
     }
 
+    .photo-gallery {
+      max-width: 100%;
+    }
+
+    .photo-section {
+      margin-top: 1.75rem;
+    }
+
+    .photo-section:first-child {
+      margin-top: 0;
+    }
+
+    .photo-section h2 {
+      margin: 0 0 0.65rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .photo-section > p {
+      margin: 0 0 0.75rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.45;
+      max-width: 65ch;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .photo-grid figure {
+      margin: 0;
+      background: var(--card);
+      border: 1px solid #e5eaf3;
+      border-radius: 12px;
+      padding: 0.5rem;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+    }
+
+    .photo-grid figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      vertical-align: middle;
+    }
+
     @media (max-width: 800px) {
       .timeline-track {
         min-width: 860px;
@@ -248,9 +298,82 @@
     </div>
 
     <div id="panelPhotos" class="tab-panel hidden" role="tabpanel">
-      <figure class="property-image">
-        <img src="./assets/property-photo.png" alt="Aerial view of the property and surrounding parking area." />
-      </figure>
+      <div class="photo-gallery">
+        <section class="photo-section" aria-labelledby="photos-heading-site">
+          <h2 id="photos-heading-site">Aerial &amp; site</h2>
+          <p>Overall property context from above.</p>
+          <div class="photo-grid">
+            <figure>
+              <img src="./assets/property-photo.png" alt="Aerial view of the property, parking, and surrounding area." />
+            </figure>
+          </div>
+        </section>
+
+        <section class="photo-section" aria-labelledby="photos-heading-exterior">
+          <h2 id="photos-heading-exterior">Building exterior</h2>
+          <p>Outdoor facades and how the building meets the street and landscaping.</p>
+          <div class="photo-grid">
+            <figure>
+              <img src="./assets/photos/exterior-meetinghouse.png" alt="Front of the meetinghouse with stone detail and signage." />
+            </figure>
+            <figure>
+              <img src="./assets/photos/exterior-building-side.png" alt="Side of the building along walkway, lawn, and parking." />
+            </figure>
+          </div>
+        </section>
+
+        <section class="photo-section" aria-labelledby="photos-heading-circulation">
+          <h2 id="photos-heading-circulation">Entries &amp; corridors</h2>
+          <p>Lobby, entrances, and main hallways people use when moving through the building.</p>
+          <div class="photo-grid">
+            <figure>
+              <img src="./assets/photos/lobby-entrance.png" alt="Lobby with seating, artwork, and glass doors to the outside." />
+            </figure>
+            <figure>
+              <img src="./assets/photos/hallway.png" alt="Long interior hallway with doors and bulletin board." />
+            </figure>
+          </div>
+        </section>
+
+        <section class="photo-section" aria-labelledby="photos-heading-kitchen">
+          <h2 id="photos-heading-kitchen">Kitchen</h2>
+          <p>Commercial-style food preparation and serving space.</p>
+          <div class="photo-grid">
+            <figure>
+              <img src="./assets/photos/kitchen.png" alt="Commercial kitchen with blue cabinets, island, and appliances." />
+            </figure>
+          </div>
+        </section>
+
+        <section class="photo-section" aria-labelledby="photos-heading-assembly">
+          <h2 id="photos-heading-assembly">Chapel &amp; assembly</h2>
+          <p>Seating areas and sanctuary sightlines, including views that connect to the gym.</p>
+          <div class="photo-grid">
+            <figure>
+              <img src="./assets/photos/pews-gym-opening.png" alt="Rows of pews with gymnasium visible through an open partition." />
+            </figure>
+            <figure>
+              <img src="./assets/photos/pews-view-into-gym.png" alt="Dimmer pew area looking into the bright gymnasium." />
+            </figure>
+            <figure>
+              <img src="./assets/photos/gym-chapel-divider.png" alt="Gym floor with folding partition open to chapel seating and stone wall." />
+            </figure>
+          </div>
+        </section>
+
+        <section class="photo-section" aria-labelledby="photos-heading-gym">
+          <h2 id="photos-heading-gym">Gymnasium &amp; courts</h2>
+          <p>Multi-purpose court space, stage, and athletic use.</p>
+          <div class="photo-grid">
+            <figure>
+              <img src="./assets/photos/gym-stage.png" alt="Gymnasium with stage, curtains, and people on the court." />
+            </figure>
+            <figure>
+              <img src="./assets/photos/gym-court-net.png" alt="Court with net across the floor and people gathered." />
+            </figure>
+          </div>
+        </section>
+      </div>
     </div>
 
     <div id="panelHeatmap" class="tab-panel hidden" role="tabpanel">
