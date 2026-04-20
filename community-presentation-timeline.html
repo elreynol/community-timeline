@@ -287,6 +287,80 @@
       border-radius: 8px;
     }
 
+    .photo-gallery img,
+    #panelHeatmap .property-image img {
+      cursor: zoom-in;
+    }
+
+    .image-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3.25rem 1rem 1rem;
+    }
+
+    .image-lightbox[hidden] {
+      display: none !important;
+    }
+
+    .image-lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.88);
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: zoom-out;
+    }
+
+    .image-lightbox-panel {
+      position: relative;
+      z-index: 1;
+      max-width: min(96vw, 1400px);
+      max-height: 90vh;
+      margin: 0 auto;
+    }
+
+    .image-lightbox-panel img {
+      display: block;
+      max-width: 100%;
+      max-height: 88vh;
+      width: auto;
+      height: auto;
+      margin: 0 auto;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    }
+
+    .image-lightbox-close {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 10002;
+      width: 2.75rem;
+      height: 2.75rem;
+      border: none;
+      border-radius: 999px;
+      background: #fff;
+      color: #1f2937;
+      font-size: 1.75rem;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .image-lightbox-close:hover {
+      background: #f3f4f6;
+    }
+
     @media (max-width: 800px) {
       .timeline-track {
         min-width: 860px;
@@ -411,6 +485,21 @@
       </figure>
     </div>
   </main>
+
+  <div
+    id="imageLightbox"
+    class="image-lightbox"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-label="Enlarged image"
+  >
+    <button type="button" class="image-lightbox-backdrop" aria-label="Close image"></button>
+    <div class="image-lightbox-panel">
+      <button type="button" class="image-lightbox-close" aria-label="Close">&times;</button>
+      <img id="imageLightboxImg" src="" alt="" />
+    </div>
+  </div>
 
   <script>
     // We keep the raw event data in one array so updates are easy later.
@@ -566,6 +655,54 @@
 
     tabButtons.forEach((btn) => {
       btn.addEventListener("click", () => setActiveTab(btn.dataset.tab));
+    });
+
+    const imageLightbox = document.getElementById("imageLightbox");
+    const imageLightboxImg = document.getElementById("imageLightboxImg");
+    const imageLightboxClose = imageLightbox.querySelector(".image-lightbox-close");
+    const imageLightboxBackdrop = imageLightbox.querySelector(".image-lightbox-backdrop");
+    let lightboxPreviousFocus = null;
+
+    function openImageLightbox(img) {
+      lightboxPreviousFocus = document.activeElement;
+      imageLightboxImg.src = img.currentSrc || img.src;
+      imageLightboxImg.alt = img.alt || "";
+      imageLightbox.removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
+      imageLightboxClose.focus();
+    }
+
+    function closeImageLightbox() {
+      imageLightbox.setAttribute("hidden", "");
+      imageLightboxImg.src = "";
+      imageLightboxImg.alt = "";
+      document.body.style.overflow = "";
+      if (lightboxPreviousFocus && typeof lightboxPreviousFocus.focus === "function") {
+        lightboxPreviousFocus.focus();
+      }
+      lightboxPreviousFocus = null;
+    }
+
+    document.body.addEventListener("click", (e) => {
+      const t = e.target;
+      if (t.closest("#imageLightbox")) return;
+      if (t.tagName !== "IMG") return;
+      const inPhotos = t.closest("#panelPhotos");
+      const inHeatmap = t.closest("#panelHeatmap");
+      if (!inPhotos && !inHeatmap) return;
+      e.preventDefault();
+      openImageLightbox(t);
+    });
+
+    imageLightboxClose.addEventListener("click", closeImageLightbox);
+    imageLightboxBackdrop.addEventListener("click", closeImageLightbox);
+
+    document.addEventListener("keydown", (e) => {
+      if (imageLightbox.hasAttribute("hidden")) return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeImageLightbox();
+      }
     });
   </script>
 </body>
