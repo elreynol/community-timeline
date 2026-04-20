@@ -132,6 +132,18 @@
       background: var(--accent-soft);
     }
 
+    .event-check {
+      position: absolute;
+      top: 0.4rem;
+      right: 0.45rem;
+      z-index: 3;
+      color: #16a34a;
+      font-size: 1.05rem;
+      font-weight: 800;
+      line-height: 1;
+      pointer-events: none;
+    }
+
     .event-date {
       position: absolute;
       top: 0.6rem;
@@ -354,7 +366,12 @@
         const card = document.createElement("button");
         card.className = "event";
         card.type = "button";
+        const checkMark =
+          index < 3
+            ? '<span class="event-check" aria-label="Completed">&#10003;</span>'
+            : "";
         card.innerHTML = `
+          ${checkMark}
           <div class="event-date">${eventItem.rawDate}</div>
           <div class="event-title">${eventItem.label}</div>
           <span class="tag">${eventItem.isRange ? "Multi-day" : "Milestone"}</span>
