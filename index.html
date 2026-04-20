@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Community Property Timeline</title>
+  <title>Cupertino Property Process Timeline</title>
   <style>
     :root {
       --bg: #f5f7fb;
@@ -34,21 +34,21 @@
     }
 
     h1 {
-      margin: 0 0 0.5rem;
-      font-size: 1.9rem;
-    }
-
-    .subtitle {
       margin: 0 0 1.25rem;
-      color: var(--muted);
-      max-width: 70ch;
+      font-size: 1.9rem;
+      text-align: center;
     }
 
     .controls {
       display: flex;
+      justify-content: center;
       gap: 0.5rem;
       flex-wrap: wrap;
       margin-bottom: 1rem;
+    }
+
+    .tab-panel.hidden {
+      display: none;
     }
 
     .btn {
@@ -217,32 +217,34 @@
 </head>
 <body>
   <main class="wrap">
-    <h1>Community Property Process Timeline</h1>
-    <p class="subtitle">
-      Click any event to show details. Use filters to focus on milestones or multi-day activities.
-    </p>
+    <h1>Cupertino Property Process Timeline</h1>
 
-    <div class="controls">
-      <button class="btn active" data-filter="all">All Events</button>
+    <div class="controls" role="tablist" aria-label="Presentation sections">
+      <button type="button" class="btn active" data-tab="timeline" role="tab" aria-selected="true">Timeline</button>
+      <button type="button" class="btn" data-tab="heatmap" role="tab" aria-selected="false">Membership Heatmap</button>
     </div>
 
-    <section class="timeline-shell">
-      <div class="timeline-scroll">
-        <div class="timeline-track" id="timelineTrack"></div>
-      </div>
+    <div id="panelTimeline" class="tab-panel" role="tabpanel">
+      <section class="timeline-shell">
+        <div class="timeline-scroll">
+          <div class="timeline-track" id="timelineTrack"></div>
+        </div>
 
-      <article class="details" id="detailsPanel" aria-live="polite"></article>
-    </section>
+        <article class="details" id="detailsPanel" aria-live="polite"></article>
+      </section>
 
-    <figure class="property-image">
-      <img src="./assets/property-photo.png" alt="Aerial view of the property and surrounding parking area." />
-    </figure>
+      <figure class="property-image">
+        <img src="./assets/property-photo.png" alt="Aerial view of the property and surrounding parking area." />
+      </figure>
 
-    <figure class="property-image">
-      <img src="./assets/heatmap.png" alt="Heatmap showing regional counts by zip code." />
-    </figure>
+      <p class="foot">Tip: On small screens, swipe left/right on the timeline track.</p>
+    </div>
 
-    <p class="foot">Tip: On small screens, swipe left/right on the timeline track.</p>
+    <div id="panelHeatmap" class="tab-panel hidden" role="tabpanel">
+      <figure class="property-image">
+        <img src="./assets/heatmap.png" alt="Heatmap showing regional member counts by zip code." />
+      </figure>
+    </div>
   </main>
 
   <script>
@@ -370,6 +372,25 @@
     }
 
     renderTimeline();
+
+    const tabButtons = document.querySelectorAll(".controls .btn[data-tab]");
+    const panelTimeline = document.getElementById("panelTimeline");
+    const panelHeatmap = document.getElementById("panelHeatmap");
+
+    function setActiveTab(tabName) {
+      tabButtons.forEach((btn) => {
+        const isActive = btn.dataset.tab === tabName;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-selected", String(isActive));
+      });
+      const showTimeline = tabName === "timeline";
+      panelTimeline.classList.toggle("hidden", !showTimeline);
+      panelHeatmap.classList.toggle("hidden", showTimeline);
+    }
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => setActiveTab(btn.dataset.tab));
+    });
   </script>
 </body>
 </html>
