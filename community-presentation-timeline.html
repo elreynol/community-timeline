@@ -520,8 +520,8 @@
       },
       {
         rawDate: "4/24",
-        label: "Submit LOI",
-        description: "A letter of intent has been prepared and ready to submit to show serious interest and outline high-level terms."
+        label: "Submit LOI & proof of funds",
+        description: "Submit a letter of intent together with proof of funds to show serious interest and outline high-level terms."
       },
       {
         rawDate: "5/1",
@@ -609,7 +609,7 @@
         const card = document.createElement("button");
         card.className = "event";
         card.type = "button";
-        const showCheck = index < 3 && eventItem.label !== "Submit LOI";
+        const showCheck = index < 3 && eventItem.label !== "Submit LOI & proof of funds";
         const checkMark = showCheck
           ? '<span class="event-check" aria-label="Completed">&#10003;</span>'
           : "";
