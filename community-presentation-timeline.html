@@ -233,6 +233,7 @@
 
     <div class="controls" role="tablist" aria-label="Presentation sections">
       <button type="button" class="btn active" data-tab="timeline" role="tab" aria-selected="true">Timeline</button>
+      <button type="button" class="btn" data-tab="photos" role="tab" aria-selected="false">Photos</button>
       <button type="button" class="btn" data-tab="heatmap" role="tab" aria-selected="false">Membership Heatmap</button>
     </div>
 
@@ -244,7 +245,9 @@
 
         <article class="details" id="detailsPanel" aria-live="polite"></article>
       </section>
+    </div>
 
+    <div id="panelPhotos" class="tab-panel hidden" role="tabpanel">
       <figure class="property-image">
         <img src="./assets/property-photo.png" alt="Aerial view of the property and surrounding parking area." />
       </figure>
@@ -395,6 +398,7 @@
 
     const tabButtons = document.querySelectorAll(".controls .btn[data-tab]");
     const panelTimeline = document.getElementById("panelTimeline");
+    const panelPhotos = document.getElementById("panelPhotos");
     const panelHeatmap = document.getElementById("panelHeatmap");
 
     function setActiveTab(tabName) {
@@ -403,9 +407,9 @@
         btn.classList.toggle("active", isActive);
         btn.setAttribute("aria-selected", String(isActive));
       });
-      const showTimeline = tabName === "timeline";
-      panelTimeline.classList.toggle("hidden", !showTimeline);
-      panelHeatmap.classList.toggle("hidden", showTimeline);
+      panelTimeline.classList.toggle("hidden", tabName !== "timeline");
+      panelPhotos.classList.toggle("hidden", tabName !== "photos");
+      panelHeatmap.classList.toggle("hidden", tabName !== "heatmap");
     }
 
     tabButtons.forEach((btn) => {
