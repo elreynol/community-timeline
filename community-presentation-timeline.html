@@ -609,10 +609,10 @@
         const card = document.createElement("button");
         card.className = "event";
         card.type = "button";
-        const checkMark =
-          index < 3
-            ? '<span class="event-check" aria-label="Completed">&#10003;</span>'
-            : "";
+        const showCheck = index < 3 && eventItem.label !== "Submit LOI";
+        const checkMark = showCheck
+          ? '<span class="event-check" aria-label="Completed">&#10003;</span>'
+          : "";
         card.innerHTML = `
           ${checkMark}
           <div class="event-date">${eventItem.rawDate}</div>
