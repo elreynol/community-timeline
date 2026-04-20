@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Property Timeline</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #cfd8e3;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #eef3fb 0%, #f7f9fc 100%);
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.9rem;
+    }
+
+    .subtitle {
+      margin: 0 0 1.25rem;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      color: var(--text);
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.18s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .timeline-shell {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 1rem 0.9rem 1.2rem;
+      border: 1px solid #e8edf5;
+    }
+
+    .timeline-scroll {
+      overflow-x: auto;
+      padding: 0.4rem 0.25rem 0.8rem;
+      scroll-behavior: smooth;
+    }
+
+    .timeline-track {
+      position: relative;
+      min-width: 980px;
+      display: flex;
+      gap: 0.8rem;
+      align-items: stretch;
+      padding: 0.9rem 0.3rem 1.2rem;
+    }
+
+    .timeline-track::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 52px;
+      height: 4px;
+      border-radius: 8px;
+      background: var(--line);
+      z-index: 1;
+    }
+
+    .event {
+      width: 155px;
+      border: 1px solid #e4e9f2;
+      background: #fff;
+      border-radius: 12px;
+      padding: 3rem 0.6rem 0.6rem;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .event:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 18px rgba(37, 99, 235, 0.16);
+      border-color: #a9c6ff;
+    }
+
+    .event.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .event-date {
+      position: absolute;
+      top: 0.6rem;
+      left: 0.6rem;
+      right: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-align: center;
+    }
+
+    .event-title {
+      margin-top: 0;
+      font-size: 0.95rem;
+      line-height: 1.3;
+      min-height: 3.8em;
+    }
+
+    .tag {
+      margin-top: 0.35rem;
+      display: inline-block;
+      font-size: 0.74rem;
+      border-radius: 999px;
+      padding: 0.16rem 0.48rem;
+      background: #ecf2ff;
+      color: #224084;
+      border: 1px solid #d3e2ff;
+    }
+
+    .details {
+      margin-top: 1rem;
+      border: 1px solid #e5eaf3;
+      border-radius: 12px;
+      background: #fbfcfe;
+      padding: 0.9rem;
+      min-height: 96px;
+    }
+
+    .details h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.1rem;
+    }
+
+    .details p {
+      margin: 0;
+      color: #334155;
+      line-height: 1.45;
+    }
+
+    .details p + p {
+      margin-top: 0.45rem;
+    }
+
+    .foot {
+      margin-top: 0.8rem;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .property-image {
+      margin-top: 1rem;
+      background: var(--card);
+      border: 1px solid #e5eaf3;
+      border-radius: 12px;
+      padding: 0.6rem;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+    }
+
+    .property-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 800px) {
+      .timeline-track {
+        min-width: 860px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1> Property Acquisition Timeline</h1>
+
+    <section class="timeline-shell">
+      <div class="timeline-scroll">
+        <div class="timeline-track" id="timelineTrack"></div>
+      </div>
+
+      <article class="details" id="detailsPanel" aria-live="polite"></article>
+    </section>
+
+    <figure class="property-image">
+      <img src="./assets/property-photo.png" alt="Aerial view of the property and surrounding parking area." />
+    </figure>
+
+    <figure class="property-image">
+      <img src="./assets/heatmap.png" alt="Heatmap showing regional counts by zip code." />
+    </figure>
+  </main>
+
+  <script>
+    // We keep the raw event data in one array so updates are easy later.
+    const events = [
+      {
+        rawDate: "3/24",
+        label: "Property posted for sale",
+        description: "The property was listed publicly, which started the timeline and opened the opportunity for review."
+      },
+      {
+        rawDate: "4/3",
+        label: "Property inspection",
+        description: "Our first on-site inspection helped assess building condition, layout, and immediate improvement needs."
+      },
+      {
+        rawDate: "4/16",
+        label: "Community open house",
+        description: "Community members were invited to tour the site, ask questions, and share early feedback."
+      },
+      {
+        rawDate: "4/24",
+        label: "Submit LOI",
+        description: "A letter of intent has been prepared and ready to submit to show serious interest and outline high-level terms."
+      },
+      {
+        rawDate: "5/1",
+        label: "Best & Final offer",
+        description: "The final proposed purchase terms to be delivered, including pricing and key transaction conditions."
+      },
+      {
+        rawDate: "5/3",
+        label: "Offer acceptance",
+        description: "The seller accepts the offer, moving the process from bidding into formal transaction steps."
+      },
+      {
+        rawDate: "5/17",
+        label: "Due diligence ends",
+        description: "Final evaluations, document reviews, and risk checks are completed before closing preparations."
+      },
+      {
+        rawDate: "7/3",
+        label: "Close",
+        description: "Closing is the final transfer point when documents are completed and ownership is officially recorded."
+      }
+    ];
+
+    // Using the current year lets us avoid hard-coding a year.
+    const currentYear = new Date().getFullYear();
+
+    // Convert "M/D" text to a Date object.
+    function parseMonthDay(monthDayText) {
+      const [month, day] = monthDayText.split("/").map(Number);
+      return new Date(currentYear, month - 1, day);
+    }
+
+    // Build a richer data structure that includes date math and labels.
+    function enrichEvents(rawEvents) {
+      return rawEvents.map((item) => {
+        const isRange = item.rawDate.includes("-");
+        let startText = item.rawDate;
+        let endText = item.rawDate;
+
+        if (isRange) {
+          [startText, endText] = item.rawDate.split("-");
+        }
+
+        const startDate = parseMonthDay(startText);
+        const endDate = parseMonthDay(endText);
+
+        const totalDays = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+
+        return {
+          ...item,
+          isRange,
+          startDate,
+          endDate,
+          totalDays
+        };
+      }).sort((a, b) => a.startDate - b.startDate);
+    }
+
+    const preparedEvents = enrichEvents(events);
+    const timelineTrack = document.getElementById("timelineTrack");
+    const detailsPanel = document.getElementById("detailsPanel");
+    let selectedIndex = 0;
+
+    function renderDetails(eventItem) {
+      detailsPanel.innerHTML = `
+        <h2>${eventItem.label}</h2>
+        <p><strong>Date:</strong> ${eventItem.rawDate}</p>
+        <p>${eventItem.description}</p>
+      `;
+    }
+
+    function renderTimeline() {
+      timelineTrack.innerHTML = "";
+      const visibleEvents = preparedEvents;
+
+      if (visibleEvents.length === 0) {
+        detailsPanel.innerHTML = "<h2>No events match this filter</h2><p>Choose a different filter above.</p>";
+        return;
+      }
+
+      // Keep the selected item in range if filtering reduced the list.
+      if (selectedIndex >= visibleEvents.length) selectedIndex = 0;
+
+      visibleEvents.forEach((eventItem, index) => {
+        const card = document.createElement("button");
+        card.className = "event";
+        card.type = "button";
+        card.innerHTML = `
+          <div class="event-date">${eventItem.rawDate}</div>
+          <div class="event-title">${eventItem.label}</div>
+          <span class="tag">${eventItem.isRange ? "Multi-day" : "Milestone"}</span>
+        `;
+
+        if (index === selectedIndex) {
+          card.classList.add("active");
+          renderDetails(eventItem);
+        }
+
+        card.addEventListener("click", () => {
+          selectedIndex = index;
+          renderTimeline();
+        });
+
+        timelineTrack.appendChild(card);
+      });
+    }
+
+    renderTimeline();
+  </script>
+</body>
+</html>
